@@ -154,4 +154,4 @@ while True:
         ser.write(d.encode('utf-8'))
         file.close()
     except Exception as e:
-        print(e
+        print(e)
