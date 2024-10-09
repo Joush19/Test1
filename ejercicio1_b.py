@@ -3,6 +3,24 @@ import time
 import serial
 import smtplib # Se utiliza para mandar los mensajes
 from email.message import EmailMessage # Se utiliza para configurar los mensajes de email
+from abc import ABC, abstractmethod  # Importar las clases base abstractas
+
+# Clase abstracta para manejar la fase de espera del vehículo
+class VehicleState(ABC):
+    @abstractmethod
+    def standby(self):
+        pass
+
+# Clase que implementa la fase de espera
+class StandbyMode(VehicleState):
+    def __init__(self):
+        self.is_standby = True
+
+    def standby(self):
+        if self.is_standby:
+            print("El vehículo está en modo de espera.")
+            # Aquí puedes agregar más lógica si es necesario
+            time.sleep(1)  # Mantener en espera un segundo
 
 en = [14, 15, 27, 22]  # El orden para conectar al puente H es EN1, EN4, EN2, EN3
 o1 = 13  # Se conecta al ENA en el puente H
@@ -122,6 +140,9 @@ def emailSent(mess, sub):
         mail = 0
         del msg
 
+# Crear una instancia de StandbyMode
+standby_mode = StandbyMode()
+
 while True:
     try:
         file = open("config.txt", 'r')
@@ -149,6 +170,10 @@ while True:
             movement('3', dist)  # Girar a la derecha (valor '3')
         else:
             movement(value, dist)
+            
+        # Lógica para la fase de espera
+        if value == '0':
+            standby_mode.standby()  # Entrar en modo de espera si el vehículo está detenido
             
         d = str(dist * 100) + '\n'
         ser.write(d.encode('utf-8'))
