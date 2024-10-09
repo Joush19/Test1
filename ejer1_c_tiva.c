@@ -122,7 +122,7 @@ void printData(void) {
     } else if (GPIOPinRead(GPIO_PORTH_BASE, 0x01) == 0) {  // Si el pin 0x01 en PORTH está en bajo
         UARTprintf("3\n");  // Imprime "3" en la UART
     } else if (GPIOPinRead(GPIO_PORTH_BASE, 0x02) == 0) {  // Si el pin 0x02 en PORTH está en bajo
-        UARTprintf("4\n");
+        UARTprintf("4\n"); // Imprime "4" en la UART
     }
     SysCtlDelay(20000000);
 }
